@@ -19,27 +19,51 @@ public class SnakeGame {
         }
 
         headPosition= new int[2];
-        headPosition[0] = x;
-        headPosition[1] = y;
+        headPosition[0] = x - 1;
+        headPosition[1] = y - 1;
     }
 
     public int[] findTailExhaustive(){
         resetCounters();
+        int neighbors;
         int length = 0;
-        int[] tailPosition = new int[3];
+        int[] tailPosition = new int[3];    // Array contains tail position at indexes 0 and 1 (x, y) and snake length at index 2
         for(int i = 0; i < game.length; i++){
             for(int j = 0; j < game[i].length; j++){
                 exhaustiveChecks++;
                 if(game[i][j] == true){
                     length++;
+                    neighbors = 0;
 
-                    //count neighbors
-                    //if 1 neighbor == tail or head
-                    //if head keep going
-                    //
+                    // Nested for-loop finds the body of the snake in the array
+                    for(int k = -1; k <= 1; k++){
+                        for(int l = -1; l <= 1; l++){
+
+                            // If statement ignores diagonal checks
+                            if((k == -1 && l == -1) || (k == - 1 && l == 1) || (k == 1 && l == -1) || (k ==1 && j == 1)){
+                                continue;
+                            }
+
+                            //If statement prevents out of bounds error by omitting negative indexes and indexes greater than board's length
+                            if(i + k < 0 || i + k > game.length - 1 || j + l < 0 || j + l > game[i].length - 1){
+                                continue;
+                            }
+
+                            // If statement increments neighbors to check. Cell with 1 neighbor might be tail
+                            if(game[i + k][j + l] == true){
+                                neighbors++;
+                            }
+                        }
+                    }
+                    neighbors -= 1;
+                    if(neighbors == 1 && (i != headPosition[0] || j != headPosition[1])){
+                        tailPosition[0] = i;
+                        tailPosition[1] = j;
+                    }
                 }
             }
         }
+        tailPosition[2] = length;
         return tailPosition;
     }
 
