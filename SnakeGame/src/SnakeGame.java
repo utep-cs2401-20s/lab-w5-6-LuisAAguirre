@@ -19,8 +19,8 @@ public class SnakeGame {
         }
 
         headPosition= new int[2];
-        headPosition[0] = x - 1;
-        headPosition[1] = y - 1;
+        headPosition[0] = x;
+        headPosition[1] = y;
     }
 
     public int[] findTailExhaustive(){
@@ -30,7 +30,10 @@ public class SnakeGame {
         int[] tailPosition = new int[3];    // Array contains tail position at indexes 0 and 1 (x, y) and snake length at index 2
         for(int i = 0; i < game.length; i++){
             for(int j = 0; j < game[i].length; j++){
-                exhaustiveChecks++;
+                // exhaustiveChecks will be increased until the tail position is found
+                if(tailPosition[0] == 0 && tailPosition[1] == 0){
+                    exhaustiveChecks++;
+                }
                 if(game[i][j] == true){
                     length++;
                     neighbors = 0;
@@ -55,7 +58,7 @@ public class SnakeGame {
                             }
                         }
                     }
-                    neighbors -= 1;
+                    neighbors -= 1;     // Removes count for game[i][j]
                     if(neighbors == 1 && (i != headPosition[0] || j != headPosition[1])){
                         tailPosition[0] = i;
                         tailPosition[1] = j;
@@ -64,11 +67,19 @@ public class SnakeGame {
             }
         }
         tailPosition[2] = length;
+        System.out.println(exhaustiveChecks);
         return tailPosition;
     }
 
     public int[] findTailRecursive(){
         resetCounters();
+        //look at head position
+        //chech for neighbors
+        //go to the next true cell
+        //make sure the neighbor we want to check is not where we came from
+        //saving tal
+        //count checks
+        //snake length
         int length = 0;
         findTailRecursive(headPosition, headPosition);
         int[] tailPosition = new int[3];
